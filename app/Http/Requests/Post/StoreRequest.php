@@ -4,7 +4,7 @@ namespace App\Http\Requests\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,6 +16,7 @@ class UpdateRequest extends FormRequest
         return true;
     }
 
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,12 +25,12 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'string',
-            'link' => 'string',
-            'description' => 'string',
+            'title' => 'required|string|unique:posts',
+            'link' => 'required|string',
+            'description' => 'required|string',
             'categories' => 'array',
-            'pubDate' => 'date',
-            'guid' => 'int',
+            'pubDate' => 'required|date',
+            'guid' => 'required|string'
         ];
     }
 }

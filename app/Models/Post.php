@@ -5,8 +5,35 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @OA\Schema(type="object"),
+ */
+
 class Post extends Model
 {
+    /**
+     *  @OA\Property(
+     *      property="title",
+     *      type="string",
+     *  ),
+     *  @OA\Property(
+     *      property="link",
+     *      type="string",
+     *  ),
+     *  @OA\Property(
+     *      property="description",
+     *      type="string",
+     *  ),
+     *  @OA\Property(
+     *      property="pubDate",
+     *      type="date",
+     *  ),
+     *  @OA\Property(
+     *      property="guid",
+     *      type="string",
+     *  )
+     */
+
     use HasFactory;
 
     protected $table = 'posts';

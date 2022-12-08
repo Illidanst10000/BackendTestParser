@@ -1,0 +1,281 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "BackendTest Parser API documentation",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/api"
+        }
+    ],
+    "paths": {
+        "/posts": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Display a list of the posts",
+                "operationId": "postsAll",
+                "responses": {
+                    "200": {
+                        "description": "Everything is fine",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Create Post",
+                "description": "Create Post",
+                "operationId": "postCreate",
+                "requestBody": {
+                    "description": "pubDate format: D, d M Y H:i:s O",
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "link",
+                                    "description",
+                                    "pubDate",
+                                    "guid"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Example title"
+                                    },
+                                    "link": {
+                                        "type": "string",
+                                        "example": "google.com"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Example description"
+                                    },
+                                    "pubDate": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "Sat, 03 Dec 2022 16:30:00 +0000"
+                                    },
+                                    "category": {
+                                        "type": "array",
+                                        "items": {},
+                                        "example": "[\"Ford\", \"BMW\", \"Audi\"]"
+                                    },
+                                    "guid": {
+                                        "type": "string",
+                                        "example": "184986510"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/posts/{id}": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Get post by id",
+                "description": "Get post by id",
+                "operationId": "49a74b6c3ff5254ebbaca7ca004deafc",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Post id",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "id"
+                            ],
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Update Post",
+                "description": "Update Post by ID",
+                "operationId": "postUpdate",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Post ID",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "id"
+                            ],
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "pubDate format: D, d M Y H:i:s O",
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Example title"
+                                    },
+                                    "link": {
+                                        "type": "string",
+                                        "example": "google.com"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Example description"
+                                    },
+                                    "pubDate": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "Sat, 03 Dec 2022 16:30:00 +0000"
+                                    },
+                                    "category": {
+                                        "type": "array",
+                                        "items": {},
+                                        "example": "[\"Ford\", \"BMW\", \"Audi\"]"
+                                    },
+                                    "guid": {
+                                        "type": "string",
+                                        "example": "184986510"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Delete Post",
+                "description": "Delete post by ID",
+                "operationId": "postDelete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Post ID",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "id"
+                            ],
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Deleted Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Category": {
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Post": {
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "link": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "pubDate": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "guid": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "PostCategory": {
+                "properties": {
+                    "post_id": {
+                        "type": "integer"
+                    },
+                    "category_id": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Posts"
+        }
+    ]
+}

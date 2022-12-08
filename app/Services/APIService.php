@@ -4,40 +4,11 @@ namespace App\Services;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\PostCategory;
 use Illuminate\Support\Facades\DB;
 
-class ParserService
+class APIService
 {
-    public function parse($data)
-    {
-        try {
-            DB::beginTransaction();
-
-            foreach ($data->channel->item as $item)
-            {
-                $postData = (array)$item;
-
-                if (isset($postData['category'])) {
-                    $categories = $postData['category'];
-                    unset($postData['category']);
-                }
-
-                $postData['pubDate'] = $this->createDateObject($postData['pubDate']);
-
-                $post = Post::firstOrCreate($postData);
-
-                if (isset($categories)) {
-                    $categoryIds = $this->createCategory($categories);
-                    $post->categories()->attach($categoryIds);
-                }
-            }
-
-            DB::commit();
-        } catch (\Exception $exception) {
-            DB::rollBack();
-            abort(500);
-        }
-    }
 
     public function store($data)
     {
@@ -49,12 +20,12 @@ class ParserService
                 unset($data['categories']);
             }
 
-
             $data['pubDate'] = $this->createDateObject($data['pubDate']);
 
             $post = Post::firstOrCreate($data);
 
             if (isset($categories)) {
+
                 $categoryIds = $this->createCategory($categories);
                 $post->categories()->attach($categoryIds);
             }
@@ -66,14 +37,47 @@ class ParserService
         }
     }
 
-    public function update()
+    public function update($data, $post)
     {
+        try {
+            DB::beginTransaction();
 
+            if (isset($data['categories'])) {
+                $categories = $data['categories'];
+                unset($data['categories']);
+            }
+
+            $data['pubDate'] = $this->createDateObject($data['pubDate']);
+
+            $post->update($data);
+
+            if (isset($categories)) {
+                $categoryIds = $this->createCategory($categories);
+                $post->categories()->sync($categoryIds);
+            }
+            else (
+                $post->categories()->delete()
+            );
+
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            abort(500);
+        }
     }
 
-    public function delete()
+    public function destroy($post)
     {
+        $post->delete();
+        $post->categories()->delete($post->id);
+    }
 
+    public function show($post)
+    {
+        $post['pubDate'] = $this->createDBDateObject($post['pubDate']);
+        $post['pubDate'] = date_format($post['pubDate'], env('FORMAT_DATE'));
+
+        return $post;
     }
 
     public function showAllPosts($postsCollection)
